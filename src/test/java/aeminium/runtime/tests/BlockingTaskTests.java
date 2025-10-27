@@ -38,14 +38,13 @@ public class BlockingTaskTests extends BaseTest {
 		Task task = rt.createBlockingTask(new Body() {
 			@Override
 			public void execute(Runtime rt, Task current) throws Exception {
-				getLogger().info("Single Task");	
+				getLogger().info("Single Task");
 			}
 		}, Runtime.NO_HINTS);
 		rt.schedule(task, Runtime.NO_PARENT, Runtime.NO_DEPS);
 
-		rt.shutdown();		
+		rt.shutdown();
 	}
-
 
 	@Test
 	public void manyTasks() {
@@ -54,8 +53,8 @@ public class BlockingTaskTests extends BaseTest {
 
 		final int TASK_COUNT = 200;
 		final AtomicInteger counter = new AtomicInteger();
-		
-		for( int i = 0 ; i < TASK_COUNT ; i++ ) {
+
+		for (int i = 0; i < TASK_COUNT; i++) {
 			Task task = rt.createBlockingTask(new Body() {
 				@Override
 				public void execute(Runtime rt, Task current) throws Exception {
@@ -65,18 +64,18 @@ public class BlockingTaskTests extends BaseTest {
 			rt.schedule(task, Runtime.NO_PARENT, Runtime.NO_DEPS);
 		}
 		rt.shutdown();
-		assertTrue( counter.get() == TASK_COUNT );
+		assertTrue(counter.get() == TASK_COUNT);
 	}
 
 	@Test
 	public void manyTasksMix() {
 		Runtime rt = getRuntime();
 		rt.init();
-		
+
 		final int TASK_COUNT = 200;
 		final AtomicInteger counter = new AtomicInteger();
-		
-		for( int i = 0 ; i < TASK_COUNT ; i++ ) {
+
+		for (int i = 0; i < TASK_COUNT; i++) {
 			Task taskB = rt.createBlockingTask(new Body() {
 				@Override
 				public void execute(Runtime rt, Task current) throws Exception {
@@ -94,6 +93,11 @@ public class BlockingTaskTests extends BaseTest {
 			rt.schedule(taskN, Runtime.NO_PARENT, Runtime.NO_DEPS);
 		}
 		rt.shutdown();
-		assertTrue( counter.get() == 2*TASK_COUNT );
+		assertTrue(counter.get() == 2 * TASK_COUNT);
+	}
+
+	@Test
+	public void testThatAlwaysFails() {
+		assertTrue(false);
 	}
 }
